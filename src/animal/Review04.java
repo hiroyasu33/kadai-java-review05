@@ -12,11 +12,5 @@ public class Review04 {
         Human sato = new Human("佐藤　花子" , 20,"映画");
            sato.Say();
            sato.think();
-
-
-
-
-
-
     }
 }
