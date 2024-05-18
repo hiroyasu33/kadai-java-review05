@@ -102,4 +102,15 @@ public class Review05 {
         return line;
     }
 
+    /*
+     * キーボードから入力された値をintで返す 引数：なし 戻り値：int
+     */
+    private static int keyInNum() {
+        int result = 0;
+        try {
+            result = Integer.parseInt(keyIn());
+        } catch (NumberFormatException e) {
+        }
+        return result;
+    }
 }
