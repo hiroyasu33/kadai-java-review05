@@ -36,7 +36,7 @@ public class Review05 {
             String str1 = keyIn();
 
          // 入力されたNameをPreparedStatementオブジェクトにセット
-            spstmt.setString(1,str1);
+            spstmt.setInt(1,Integer.parseInt(str1));
 
          // 5, 6. Select文の実行と結果を格納／代入
             rs = spstmt.executeQuery();
@@ -49,34 +49,6 @@ public class Review05 {
                 // Age列の値を取得
                 int age = rs.getInt("Age");
 
-                // 取得した値を表示
-                System.out.println(name);
-                System.out.println(age);
-            }
-
-            // 7-2. 更新処理を行なう
-            // 更新用SQLおよび更新用PreparedStatementオブジェクトを取得
-            String insertSql = "INSERT INTO person (Name,Age)";
-            ipstmt = con.prepareStatement(insertSql);
-
-         // 更新するAgeを入力
-            int num1 = keyInNum();
-
-            // 入力されたNameとAgeをPreparedStatementオブジェクトにセット
-            ipstmt.setString(1, str1);
-            ipstmt.setInt(2, num1);
-
-
-            // 7-3. 更新後の結果を表示する
-            rs.close();
-
-            // 検索の再実行と結果を格納／代入
-            rs = spstmt.executeQuery();
-            while (rs.next()) {
-                // Name列の値を取得
-                String name = rs.getString("Name");
-                // age列の値を取得
-                int age = rs.getInt("age");
                 // 取得した値を表示
                 System.out.println(name);
                 System.out.println(age);
@@ -139,15 +111,4 @@ public class Review05 {
         return line;
     }
 
-    /*
-     * キーボードから入力された値をintで返す 引数：なし 戻り値：int
-     */
-    private static int keyInNum() {
-        int result = 0;
-        try {
-            result = Integer.parseInt(keyIn());
-        } catch (NumberFormatException e) {
-        }
-        return result;
-    }
 }
