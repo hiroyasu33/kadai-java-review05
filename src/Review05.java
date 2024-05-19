@@ -7,14 +7,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-
 public class Review05 {
 
-
     public static void main(String[] args) {
-     // 3. データベース接続と結果取得のための変数宣言
+        // 3. データベース接続と結果取得のための変数宣言
         Connection con = null;
-        PreparedStatement pstmt = null;
+        PreparedStatement spstmt = null;
+        PreparedStatement ipstmt = null;
         ResultSet rs = null;
 
         try {
@@ -28,31 +27,61 @@ public class Review05 {
                     "Altair19980330");
 
             // 4. DBとやりとりする窓口（PreparedStatementオブジェクト）の作成
-            String sql = "SELECT * FROM person WHERE id = ?";
-            pstmt = con.prepareStatement(sql);
+            // 検索用SQLおよび検索用PreparedStatementオブジェクトを取得
+            String selectSql = "SELECT * FROM person where id = ?";
+            spstmt = con.prepareStatement(selectSql);
 
-            // 5, 6. Select文の実行と結果を格納／代入
+         // 更新するNameを入力
             System.out.print("検索キーワードを入力してください > ");
-            String input = keyIn();
+            String str1 = keyIn();
 
-            // PreparedStatementオブジェクトの?に値をセット
-            pstmt.setString(1, input);
+         // 入力されたNameをPreparedStatementオブジェクトにセット
+            spstmt.setString(1,str1);
 
-            rs = pstmt.executeQuery();
+         // 5, 6. Select文の実行と結果を格納／代入
+            rs = spstmt.executeQuery();
 
-            // 7. 結果を表示する
+            // 7-1. 更新前の結果を表示する
             while (rs.next()) {
-                // name列の値を取得
-               String name = rs.getString("name");
+                // Name列の値を取得
+                String name = rs.getString("Name");
 
-               // age列の値を取得
-               int age = rs.getInt("age");
+                // Age列の値を取得
+                int age = rs.getInt("Age");
 
                 // 取得した値を表示
                 System.out.println(name);
                 System.out.println(age);
-
             }
+
+            // 7-2. 更新処理を行なう
+            // 更新用SQLおよび更新用PreparedStatementオブジェクトを取得
+            String insertSql = "INSERT INTO person (Name,Age)";
+            ipstmt = con.prepareStatement(insertSql);
+
+         // 更新するAgeを入力
+            int num1 = keyInNum();
+
+            // 入力されたNameとAgeをPreparedStatementオブジェクトにセット
+            ipstmt.setString(1, str1);
+            ipstmt.setInt(2, num1);
+
+
+            // 7-3. 更新後の結果を表示する
+            rs.close();
+
+            // 検索の再実行と結果を格納／代入
+            rs = spstmt.executeQuery();
+            while (rs.next()) {
+                // Name列の値を取得
+                String name = rs.getString("Name");
+                // age列の値を取得
+                int age = rs.getInt("age");
+                // 取得した値を表示
+                System.out.println(name);
+                System.out.println(age);
+            }
+
         } catch (ClassNotFoundException e) {
             System.err.println("JDBCドライバのロードに失敗しました。");
             e.printStackTrace();
@@ -69,11 +98,19 @@ public class Review05 {
                     e.printStackTrace();
                 }
             }
-            if (pstmt != null) {
+            if (ipstmt != null) {
                 try {
-                    pstmt.close();
+                    ipstmt.close();
                 } catch (SQLException e) {
-                    System.err.println("PreparedStatementを閉じるときにエラーが発生しました。");    // ← 修正
+                    System.err.println("PreparedStatementを閉じるときにエラーが発生しました。"); // ← 修正
+                    e.printStackTrace();
+                }
+            }
+            if (spstmt != null) {
+                try {
+                    spstmt.close();
+                } catch (SQLException e) {
+                    System.err.println("PreparedStatementを閉じるときにエラーが発生しました。");
                     e.printStackTrace();
                 }
             }
