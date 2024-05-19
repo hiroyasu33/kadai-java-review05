@@ -77,9 +77,6 @@ public class Review05 {
                 String name = rs.getString("Name");
                 // age列の値を取得
                 int age = rs.getInt("age");
-                // 取得した値を表示
-                System.out.println(name);
-                System.out.println(age);
             }
 
         } catch (ClassNotFoundException e) {
